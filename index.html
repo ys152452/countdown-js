@@ -1,255 +1,255 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<meta charset="utf-8" />
-		<title></title>
-		<link rel="stylesheet" href="css/style.css" />
-		<link rel="stylesheet" href="css/swiper-4.3.2.min.css" />
-	</head>
+ <head>
+  <meta charset="utf-8" />
+  <title></title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/swiper-4.3.2.min.css" />
+ </head>
 
-	<body class="lock-operation">
-		<div class="lo-header"></div>
-		<div class="lo-content">
-			<div class="lo-time">
-				<div class="lo-time-box">
-					<span class="lo-time-progress"></span>
-				</div>
-				<span class="lo-time-text">60s</span>
-				<p>注：倒计时结束后自动写入锁内</p>
-			</div>
-			<div class="lo-current">
-				<div class="lo-title">
-					<p>当前操作</p>
-				</div>
-				<div class="lo-container">
-					<div class="scan-box lo-box">
-						<div class="lo-box-header">
-							<p>
-								扫描缩略图
-							</p>
-						</div>
-						<div class="lo-box-content">
-							<div class="lo-box-img">
-								<img src="img/assets/1.png">
-							</div>
-						</div>
-					</div>
-					<div class="extra-box lo-box">
-						<div class="lo-box-header">
-							<p>
-								其他图像
-							</p>
-							<button onclick="fileIptClick()">选择文件</button>
-							<p class="lo-upload-empty">未选择文件</p>
-							<input id="scanInput" type="file" onchange="uploadHandler(event)">
-						</div>
-						<div class="lo-box-content lo-box-swiper">
-							<span onclick="removeIndexSwiper()" class="swiper-remove">X</span>
-							<div class="swiper-wrapper"></div>
-							<!-- 如果需要分页器 -->
-							<div class="file-swiper-pagination swiper-pagination"></div>
-							<!-- 如果需要导航按钮 -->
-							<div class="file-swiper-button-prev swiper-button-prev"></div>
-							<div class="file-swiper-button-next swiper-button-next"></div>
-						</div>
-					</div>
-					<div class="info-box lo-box">
-						<div class="lo-box-header">
-							<p>
-								安全智能锁信息
-							</p>
-						</div>
-						<div class="lo-box-content lo-box-lock">
-							<div>
-								<img src="img/locks.png">
-								<div class="lo-lock-info">
-									<p id="lockNo"><span>ELOCK NO: </span>CNNT0000002592</p>
-									<p id="lockState"><span>STATE: </span>WIFI已打开</p>
-									<p id="lockPower"><span>POWER: </span>70%</p>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="btns-box">
-						<button onclick="save()">写入锁内</button>
-						<button onclick="cancle()">取消写入 </button>
-					</div>
-				</div>
-			</div>
-			<div class="lo-history">
-				<div class="lo-title">
-					<p>历史操作</p>
-					<span class="lo-title-right"></span>
-				</div>
-				<div class="lo-container">
-					<div class="lo-table-scroll">
-						<table border="0">
-							<tr>
-								<th>操作时间</th>
-								<th>安全智能锁编号</th>
-								<th>扫描图</th>
-								<th>其他图像</th>
-								<th>结果</th>
-							</tr>
-							<tr>
-								<td height="60px">2018年6月7日 15:30:20</td>
-								<td height="60px">CNNT0000002592</td>
-								<td height="60px">
-									<img class="lo-table-img" src="img/assets/2.png">
-								</td>
-								<td height="60px">
-									<span onclick="showExImgs()">查看</span>
-								</td>
-								<td height="60px">写入成功</td>
-							</tr>
-							<tr>
-								<td height="60px">2018年6月7日 15:30:20</td>
-								<td height="60px">CNNT0000002592</td>
-								<td height="60px">
-									<img class="lo-table-img" src="img/assets/2.png">
-								</td>
-								<td height="60px">
-									<span onclick="showExImgs()">查看</span>
-								</td>
-								<td height="60px">写入成功</td>
-							</tr>
-							<tr>
-								<td height="60px">2018年6月7日 15:30:20</td>
-								<td height="60px">CNNT0000002592</td>
-								<td height="60px">
-									<img class="lo-table-img" src="img/assets/2.png">
-								</td>
-								<td height="60px">
-									<span onclick="showExImgs()">查看</span>
-								</td>
-								<td height="60px">写入成功</td>
-							</tr>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="swiperDialog">
-			<div id="dialogSwiper">
-				<div class="swiper-wrapper">
-					<div class="swiper-slide"><img class="lo-box-img" src="img/assets/1.png"></div>
-					<div class="swiper-slide"><img class="lo-box-img" src="img/assets/1.png"></div>
-					<div class="swiper-slide"><img class="lo-box-img" src="img/assets/1.png"></div>
-				</div>
-				<!-- 如果需要分页器 -->
-				<div class="dialog-swiper-pagination swiper-pagination"></div>
-				<!-- 如果需要导航按钮 -->
-				<div class="dialog-swiper-button-prev swiper-button-prev"></div>
-				<div class="dialog-swiper-button-next swiper-button-next"></div>
-			</div>
-		</div>
-		<div id="swiperDialogModel"></div>
-	</body>
-	<script type="text/javascript" src="js/jquery-1.11.0.js"></script>
-	<script type="text/javascript" src="js/swiper-4.3.2.min.js"></script>
-	<script>
-		var uploadSwiper, t, t0;
-		var moving = false;
-		var timeStart = 60;
-		var removeIndex = 0;
+ <body class="lock-operation">
+  <div class="lo-header"></div>
+  <div class="lo-content">
+   <div class="lo-time">
+    <div class="lo-time-box">
+     <span class="lo-time-progress"></span>
+    </div>
+    <span class="lo-time-text">60s</span>
+    <p>注：倒计时结束后自动写入锁内</p>
+   </div>
+   <div class="lo-current">
+    <div class="lo-title">
+     <p>当前操作</p>
+    </div>
+    <div class="lo-container">
+     <div class="scan-box lo-box">
+      <div class="lo-box-header">
+       <p>
+        扫描缩略图
+       </p>
+      </div>
+      <div class="lo-box-content">
+       <div class="lo-box-img">
+        <img src="img/assets/1.png">
+       </div>
+      </div>
+     </div>
+     <div class="extra-box lo-box">
+      <div class="lo-box-header">
+       <p>
+        其他图像
+       </p>
+       <button onclick="fileIptClick()">选择文件</button>
+       <p class="lo-upload-empty">未选择文件</p>
+       <input id="scanInput" type="file" onchange="uploadHandler(event)">
+      </div>
+      <div class="lo-box-content lo-box-swiper">
+       <span onclick="removeIndexSwiper()" class="swiper-remove">X</span>
+       <div class="swiper-wrapper"></div>
+       <!-- 如果需要分页器 -->
+       <div class="file-swiper-pagination swiper-pagination"></div>
+       <!-- 如果需要导航按钮 -->
+       <div class="file-swiper-button-prev swiper-button-prev"></div>
+       <div class="file-swiper-button-next swiper-button-next"></div>
+      </div>
+     </div>
+     <div class="info-box lo-box">
+      <div class="lo-box-header">
+       <p>
+        安全智能锁信息
+       </p>
+      </div>
+      <div class="lo-box-content lo-box-lock">
+       <div>
+        <img src="img/locks.png">
+        <div class="lo-lock-info">
+         <p id="lockNo"><span>ELOCK NO: </span>CNNT0000002592</p>
+         <p id="lockState"><span>STATE: </span>WIFI已打开</p>
+         <p id="lockPower"><span>POWER: </span>70%</p>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="btns-box">
+      <button onclick="save()">写入锁内</button>
+      <button onclick="cancle()">取消写入 </button>
+     </div>
+    </div>
+   </div>
+   <div class="lo-history">
+    <div class="lo-title">
+     <p>历史操作</p>
+     <span class="lo-title-right"></span>
+    </div>
+    <div class="lo-container">
+     <div class="lo-table-scroll">
+      <table border="0">
+       <tr>
+        <th>操作时间</th>
+        <th>安全智能锁编号</th>
+        <th>扫描图</th>
+        <th>其他图像</th>
+        <th>结果</th>
+       </tr>
+       <tr>
+        <td height="60px">2018年6月7日 15:30:20</td>
+        <td height="60px">CNNT0000002592</td>
+        <td height="60px">
+         <img class="lo-table-img" src="img/assets/2.png">
+        </td>
+        <td height="60px">
+         <span onclick="showExImgs()">查看</span>
+        </td>
+        <td height="60px">写入成功</td>
+       </tr>
+       <tr>
+        <td height="60px">2018年6月7日 15:30:20</td>
+        <td height="60px">CNNT0000002592</td>
+        <td height="60px">
+         <img class="lo-table-img" src="img/assets/2.png">
+        </td>
+        <td height="60px">
+         <span onclick="showExImgs()">查看</span>
+        </td>
+        <td height="60px">写入成功</td>
+       </tr>
+       <tr>
+        <td height="60px">2018年6月7日 15:30:20</td>
+        <td height="60px">CNNT0000002592</td>
+        <td height="60px">
+         <img class="lo-table-img" src="img/assets/2.png">
+        </td>
+        <td height="60px">
+         <span onclick="showExImgs()">查看</span>
+        </td>
+        <td height="60px">写入成功</td>
+       </tr>
+      </table>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div id="swiperDialog">
+   <div id="dialogSwiper">
+    <div class="swiper-wrapper">
+     <div class="swiper-slide"><img class="lo-box-img" src="img/assets/1.png"></div>
+     <div class="swiper-slide"><img class="lo-box-img" src="img/assets/1.png"></div>
+     <div class="swiper-slide"><img class="lo-box-img" src="img/assets/1.png"></div>
+    </div>
+    <!-- 如果需要分页器 -->
+    <div class="dialog-swiper-pagination swiper-pagination"></div>
+    <!-- 如果需要导航按钮 -->
+    <div class="dialog-swiper-button-prev swiper-button-prev"></div>
+    <div class="dialog-swiper-button-next swiper-button-next"></div>
+   </div>
+  </div>
+  <div id="swiperDialogModel"></div>
+ </body>
+ <script type="text/javascript" src="js/jquery-1.11.0.js"></script>
+ <script type="text/javascript" src="js/swiper-4.3.2.min.js"></script>
+ <script>
+  var uploadSwiper, t, t0;
+  var moving = false;
+  var timeStart = 60;
+  var removeIndex = 0;
 
-		function fileIptClick() {
-			$('#scanInput').click()
-		}
+  function fileIptClick() {
+   $('#scanInput').click()
+  }
 
-		function uploadHandler(evt) {
-			var file = evt.target.files[0];
-			var reader = new FileReader();
-			reader.onload = function(e) {
-				$('.lo-box-swiper').show()
-				$('.lo-upload-empty').hide()
-				imgFile = e.target.result;
-				uploadSwiper.appendSlide(['<div class="swiper-slide"><img class="lo-box-img" src="' + imgFile + '"></div>']);
-			};
-			reader.readAsDataURL(file);
-		}
+  function uploadHandler(evt) {
+   var file = evt.target.files[0];
+   var reader = new FileReader();
+   reader.onload = function(e) {
+    $('.lo-box-swiper').show()
+    $('.lo-upload-empty').hide()
+    imgFile = e.target.result;
+    uploadSwiper.appendSlide(['<div class="swiper-slide"><img class="lo-box-img" src="' + imgFile + '"></div>']);
+   };
+   reader.readAsDataURL(file);
+  }
 
-		function showExImgs() {
-			$('#swiperDialog').show()
-			$('#swiperDialogModel').show()
-			var dialogSwiper = new Swiper('#dialogSwiper', {
-				pagination: {
-					el: '.dialog-swiper-pagination',
-				},
-				navigation: {
-					nextEl: '.dialog-swiper-button-next',
-					prevEl: '.dialog-swiper-button-prev',
-				}
-			})
-		}
-		function timeProgress() {
-			moving = false
-			if(timeStart > 0) {
-				timeStart--
-			} else {
-				clearTimeout(t0)
-				save()
-			}
-			$('.lo-time-progress').eq(0).css('width', (timeStart / 60).toFixed(2) * 100 + '%')
-			$('.lo-time-text').eq(0).text(timeStart + 's')
-		}
+  function showExImgs() {
+   $('#swiperDialog').show()
+   $('#swiperDialogModel').show()
+   var dialogSwiper = new Swiper('#dialogSwiper', {
+    pagination: {
+     el: '.dialog-swiper-pagination',
+    },
+    navigation: {
+     nextEl: '.dialog-swiper-button-next',
+     prevEl: '.dialog-swiper-button-prev',
+    }
+   })
+  }
+  function timeProgress() {
+   moving = false
+   if(timeStart > 0) {
+    timeStart--
+   } else {
+    clearTimeout(t0)
+    save()
+   }
+   $('.lo-time-progress').eq(0).css('width', (timeStart / 60).toFixed(2) * 100 + '%')
+   $('.lo-time-text').eq(0).text(timeStart + 's')
+  }
 
-		function timeGo() {
-			t = setTimeout(function() {
-				t0 = setInterval(timeProgress, 1000)
-			}, 2000)
-		}
+  function timeGo() {
+   t = setTimeout(function() {
+    t0 = setInterval(timeProgress, 1000)
+   }, 2000)
+  }
 
-		function save() {
-			console.log('save')
-		}
+  function save() {
+   console.log('save')
+  }
 
-		function cancle() {
-			$('.lo-upload-empty').show()
-			$('.lo-box-swiper').hide()
-			$('.lo-box-swiper').find('.swiper-wrapper').eq(0).html('')
-		}
-		function removeIndexSwiper(){
-			$('.lo-current .lo-container .lo-box-swiper .swiper-wrapper').find('.swiper-slide').eq(removeIndex).remove()
-			if($('.lo-current .lo-container .lo-box-swiper .swiper-wrapper').find('.swiper-slide').length<1){
-				$('.lo-box-swiper').hide()
-				$('.lo-upload-empty').show()
-			}
-		}
-		$(function() {
-			t0 = setInterval(timeProgress, 1000)
-			uploadSwiper = new Swiper('.lo-box-swiper', {
-				pagination: {
-					el: '.swiper-pagination',
-				},
-				navigation: {
-					nextEl: '.swiper-button-next',
-					prevEl: '.swiper-button-prev',
-				},
-				observer:true,
-				on: {
-					slideChange: function() {
-						removeIndex = this.activeIndex
-					},
-				}
-			})
-			document.addEventListener("mousemove", function(e) {
-				clearTimeout(t)
-				if(!moving) {
-					clearTimeout(t0)
-					moving = true
-				}
-				timeGo()
-			}, {
-				passive: true
-			})
-			$('#swiperDialogModel').on('click', function(e) {
-				e.stopPropagation()
-				$('#swiperDialog').hide()
-				$('#swiperDialogModel').hide()
-			})
-		})
-	</script>
+  function cancle() {
+   $('.lo-upload-empty').show()
+   $('.lo-box-swiper').hide()
+   $('.lo-box-swiper').find('.swiper-wrapper').eq(0).html('')
+  }
+  function removeIndexSwiper(){
+   $('.lo-current .lo-container .lo-box-swiper .swiper-wrapper').find('.swiper-slide').eq(removeIndex).remove()
+   if($('.lo-current .lo-container .lo-box-swiper .swiper-wrapper').find('.swiper-slide').length<1){
+    $('.lo-box-swiper').hide()
+    $('.lo-upload-empty').show()
+   }
+  }
+  $(function() {
+   t0 = setInterval(timeProgress, 1000)
+   uploadSwiper = new Swiper('.lo-box-swiper', {
+    pagination: {
+     el: '.swiper-pagination',
+    },
+    navigation: {
+     nextEl: '.swiper-button-next',
+     prevEl: '.swiper-button-prev',
+    },
+    observer:true,
+    on: {
+     slideChange: function() {
+      removeIndex = this.activeIndex
+     },
+    }
+   })
+   document.addEventListener("mousemove", function(e) {
+    clearTimeout(t)
+    if(!moving) {
+     clearTimeout(t0)
+     moving = true
+    }
+    timeGo()
+   }, {
+    passive: true
+   })
+   $('#swiperDialogModel').on('click', function(e) {
+    e.stopPropagation()
+    $('#swiperDialog').hide()
+    $('#swiperDialogModel').hide()
+   })
+  })
+ </script>
 
 </html>
